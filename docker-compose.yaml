@@ -7,12 +7,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./src:/var/www/laravel
   php:
-   # image: registry.digitalocean.com/laravel-registry/devops-php@sha256:806efee32a90cfbf88102dc27d84b30653d656dd18b77e1b4f4536a7f82eb1dd
-    build:
-      context: .
-      dockerfile: php.Dockerfile
-    volumes:
-      - ./src:/var/www/laravel
+    image: registry.digitalocean.com/laravel-registry/devops-php:1.0.1
   mysql:
     image: mysql:8.0
     env_file:
