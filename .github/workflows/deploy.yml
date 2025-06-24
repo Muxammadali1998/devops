@@ -1,7 +1,7 @@
 name: My deploy
 
 on:
-  workflow_dispatch:
+  [push]
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: Test deploy
         run: echo "Success Laravel test"
 
-      - name: Copy changed files to server
+      - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -24,7 +24,7 @@ jobs:
           target: /opt/laravel
 
       - name: Copy changed files to server
-        uses: appleboy/scp-action@v1
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
