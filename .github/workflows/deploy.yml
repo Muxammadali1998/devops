@@ -23,15 +23,6 @@ jobs:
           source: "."
           target: /opt/laravel
 
-      - name: Cd work dir
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: cd /opt/laravel
-
       - name: Run app
         uses: appleboy/ssh-action@v1
         with:
@@ -39,4 +30,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: docker compose up -d
+          script: |
+              cd /opt/laravel
+              docker compose up -d
