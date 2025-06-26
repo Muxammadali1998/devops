@@ -44,5 +44,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
               cd /opt/laravel
-              yq -i ".services.php.image.${{ needs.build.outputs.image_name }}
+              yq -i '.services.php.image"${{ needs.build.outputs.image_name }}"' docker-compose.yaml
               docker compose up -d
