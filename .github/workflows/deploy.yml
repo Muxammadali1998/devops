@@ -16,7 +16,7 @@ jobs:
       - name: Build and push
         run: |
           docker build -t registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }} -f php.Dockerfile .
-          docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ REGISTRY_TOKEN }}
+          docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ secrets.REGISTRY_TOKEN }}
           docker push registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }}    
 
   deploy:
