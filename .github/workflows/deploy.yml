@@ -45,4 +45,5 @@ jobs:
           script: |
               cd /opt/laravel
               yq -i '.services.php.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
+              docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ secrets.REGISTRY_TOKEN }}
               docker compose up -d
