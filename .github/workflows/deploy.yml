@@ -9,13 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_name: registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }}
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Build and push
         run: |
           docker build -t registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }} -f php.Dockerfile .
-          docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ REGISTRY_TOKENT }}
+          docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ REGISTRY_TOKEN }}
           docker push registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }}    
 
   deploy:
