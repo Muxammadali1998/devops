@@ -4,16 +4,27 @@ on:
   [push]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
 
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      image_name: registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Test deploy
-        run: echo "Success Laravel test"
+      - name: Build and push
+        run: |
+          docker build -t registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }} -f php.Dockerfile .
+          docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ REGISTRY_TOKENT }}
+          docker push registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }}    
 
-      - name: Copy files via SSH
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -32,4 +43,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
               cd /opt/laravel
+              yq -i ".services.php.image.${{ needs.build.outputs.image_name }}
               docker compose up -d
