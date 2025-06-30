@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - './django-app/*'
+      - './django-app/**'
       - '.github/workflows/django-deploy.yml'
 jobs:
   deploy:
@@ -20,6 +20,7 @@ jobs:
         run: |
           python3 -m venv venv
           source venv/bin/activate
+          pip3 install --upgrade pip
           pip3 install -r requirements.txt
 
       - name: Deploy
