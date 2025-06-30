@@ -1,0 +1,35 @@
+name: django-deploy.yml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ./django-app
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./my-django-app"
+          target: /opt/
+
+      - name: Run app
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_SSH_HOST }}
+          username: ${{ secrets.SSH_SSH_USERNAME }}
+          key: ${{ secrets.SSH_SSH_KEY }}
+          port: ${{ secrets.SSH_SSH_PORT }}
+          script: |
+            cd /opt/my-django-app
+            yq -i '.services.php.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
+            docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ secrets.REGISTRY_TOKEN }}
+            docker compose up -d

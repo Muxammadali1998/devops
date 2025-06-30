@@ -1,7 +1,13 @@
 name: My deploy
 
 on:
-  [push]
+  push:
+    branches:
+      - main
+    paths:
+      - laravel-app-with-docker
+  workflow_dispatch:
+
 
 jobs:
 
@@ -14,6 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build and push
+        working-directory: ./laravel-app-with-docker
         run: |
           docker build -t registry.digitalocean.com/laravel-registry/devops-php:${{ github.sha }} -f php.Dockerfile .
           docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ secrets.REGISTRY_TOKEN }}
@@ -32,7 +39,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "."
+          source: "./laravel-app-with-docker"
           target: /opt/laravel
 
       - name: Run app
