@@ -34,6 +34,8 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/swiftmailer/swiftmailer" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-iconv" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-php73" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel-app-with-docker/src/vendor" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
