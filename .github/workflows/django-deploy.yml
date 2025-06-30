@@ -25,13 +25,14 @@ jobs:
 
       - name: Deploy
         uses: appleboy/scp-action@v1
+        working-directory: ./django-app/mydjangoapp
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "./django-app/mydjangoapp"
-          target: /opt/
+          source: "."
+          target: /opt/mydjangoapp
 
       - name: Run app
         uses: appleboy/ssh-action@v1
