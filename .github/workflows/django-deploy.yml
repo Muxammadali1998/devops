@@ -4,13 +4,25 @@ on:
     branches:
       - main
     paths:
-      - ./django-app
-      - .github/workflows/django-deploy.yml
+      - './django-app/*'
+      - '.github/workflows/django-deploy.yml'
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+      - with:
+          python-version: '3.10.12'
+
+      - name: pip install packages
+        working-directory: ./django-app/mydjangoapp
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip3 install -r requirements.txt
+
 
       - name: Deploy
         uses: appleboy/scp-action@v1
@@ -19,7 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "./my-django-app"
+          source: "./django-app/mydjangoapp"
           target: /opt/
 
       - name: Run app
@@ -29,8 +41,4 @@ jobs:
           username: ${{ secrets.SSH_SSH_USERNAME }}
           key: ${{ secrets.SSH_SSH_KEY }}
           port: ${{ secrets.SSH_SSH_PORT }}
-          script: |
-            cd /opt/my-django-app
-            yq -i '.services.php.image = "${{ needs.build.outputs.image_name }}"' docker-compose.yaml
-            docker login registry.digitalocean.com -u student1223@tuit.uz -p ${{ secrets.REGISTRY_TOKEN }}
-            docker compose up -d
+          script: systemctl restart mydjangoapp-gunicorn.service
