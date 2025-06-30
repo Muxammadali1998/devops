@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - ./django-app
+      - .github/workflows/django-deploy.yml
 jobs:
   deploy:
     runs-on: ubuntu-latest
