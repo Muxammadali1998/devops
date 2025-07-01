@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "mydjangoapp/*"
+          source: "django-app/mydjangoapp/*"
           target: '/opt/'
 
       - name: Run app
