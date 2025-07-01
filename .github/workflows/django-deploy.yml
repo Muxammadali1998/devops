@@ -30,8 +30,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "django-app/mydjangoapp/*"
-          target: '/opt/mydjangoapp/'
+          source: "mydjangoapp/*"
+          target: '/opt/'
 
       - name: Run app
         uses: appleboy/ssh-action@v1
